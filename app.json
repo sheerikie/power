@@ -1,0 +1,12 @@
+{
+  "name": "Power",
+  "displayName": "Power",
+  "expo": {
+    "name": "Power",
+    "slug": "Power",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
