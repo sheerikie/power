@@ -1,3 +1,4 @@
+globals.DEV = true;
 import "react-native";
 import React from "react";
 import { fireEvent, render } from "react-native-testing-library";
@@ -13,10 +14,10 @@ it("renders correctly", async () => {
   const { getByText, getByPlaceholder } = render(
     <RegisterScreen onSubmit={handleSubmit} />
   );
-  const button = getByText(/submit/i);
+  const button = getByText(/REGISTER/i);
 
-  await fireEvent.changeText(getByPlaceholder(/email/i), email);
-  await fireEvent.changeText(getByPlaceholder(/password/i), password);
+  await fireEvent.changeText(getByPlaceholder(/Enter Email/i), email);
+  await fireEvent.changeText(getByPlaceholder(/Enter Password/i), password);
   fireEvent.press(button);
 
   expect(submittedData).toEqual({ password, email });

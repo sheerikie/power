@@ -1,25 +1,28 @@
 import "react-native";
 import React from "react";
-import { fireEvent, render } from "react-native-testing-library";
-import HomeScreen from "../Screen/HomeScreen";
-import { expect, it, jest } from "@jest/globals";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  wait,
+} from "@testing-library/react-native";
+import App from "../Screen/HomeScreen";
 
-it("renders correctly", async () => {
-  const email = "eve.holt@reqres.ins";
-  const password = "cityslicka";
-  let submittedData = {};
-  // @ts-ignore
-  const handleSubmit = jest.fn((data) => (submittedData = data));
-  const { getByText, getByPlaceholder } = render(
-    <HomeScreen onSubmit={handleSubmit} />
-  );
-  const button = getByText(/submit/i);
+//mocking async storage module
+jest.mock("@react-native-community/async-storage", () => ({
+  setItem: jest.fn(),
+}));
 
-  await fireEvent.changeText(getByPlaceholder(/email/i), email);
-  await fireEvent.changeText(getByPlaceholder(/password/i), password);
-  fireEvent.press(button);
+afterEach(cleanup);
 
-  expect(submittedData).toEqual({ password, email });
-  expect(handleSubmit).toHaveBeenCalledWith({ password, email });
-  expect(handleSubmit).toHaveBeenCalledTimes(1);
+it("renders/navigats throughout app screens", async () => {
+  const { getByText } = render(<App />);
+  const homeText = getByText(/HomeScreen/i);
+  expect(homeText).not.toBeNull();
+  fireEvent.press(getByText(/SettingsScreen/i));
+
+  await wait(() => {
+    const counterText = getByText(/Setting Screen/i);
+    expect(counterText.props.children).toEqual(["Setting Screen "]);
+  });
 });
