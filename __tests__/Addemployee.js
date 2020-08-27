@@ -1,25 +1,25 @@
 import "react-native";
 import React from "react";
 import { fireEvent, render } from "react-native-testing-library";
-import HomeScreen from "../Screen/HomeScreen";
+import Editemployee from "../Screen/Editemployee";
 import { expect, it, jest } from "@jest/globals";
 
 it("renders correctly", async () => {
-  const email = "eve.holt@reqres.ins";
-  const password = "cityslicka";
+  const name = "morpheus";
+  const job = "leader";
   let submittedData = {};
   // @ts-ignore
   const handleSubmit = jest.fn((data) => (submittedData = data));
   const { getByText, getByPlaceholder } = render(
-    <HomeScreen onSubmit={handleSubmit} />
+    <Editemployee onSubmit={handleSubmit} />
   );
-  const button = getByText(/submit/i);
+  const button = getByText(/Edit Employee/i);
 
-  await fireEvent.changeText(getByPlaceholder(/email/i), email);
-  await fireEvent.changeText(getByPlaceholder(/password/i), password);
+  await fireEvent.changeText(getByPlaceholder(/name/i), name);
+  await fireEvent.changeText(getByPlaceholder(/job/i), job);
   fireEvent.press(button);
 
-  expect(submittedData).toEqual({ password, email });
-  expect(handleSubmit).toHaveBeenCalledWith({ password, email });
+  expect(submittedData).toEqual({ job, name });
+  expect(handleSubmit).toHaveBeenCalledWith({ job, name });
   expect(handleSubmit).toHaveBeenCalledTimes(1);
 });
